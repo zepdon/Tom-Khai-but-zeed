@@ -62,9 +62,16 @@ void Game::printEndGame() {
   cout << "Game over." << '\n';
 }
 
+void Game::cleanUp() {
+  for (int i = 0; i < scenes.size(); i++) {
+    delete scenes[i];
+  }
+}
+
 bool Game::gameEnded() {
   if (currentScene->getId() == 4) {
     printEndGame();
+    cleanUp();
     return true;
   }
   return false;

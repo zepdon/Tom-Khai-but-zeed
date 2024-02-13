@@ -46,5 +46,7 @@ class Game {
     void askForChoice();
 
     bool gameEnded();
+
+    void cleanUp();
 };
 
