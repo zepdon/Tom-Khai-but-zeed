@@ -10,7 +10,6 @@ int main() {
   game.addScene("bad_ending", "You died.", true);
   game.addScene("nice_ending", "You survived.", true);
 
-  game.printAllScenes();
   // Add options to scenes
   game.addOption("begin", {{"Go left", "2"}, {"Go right", "3"}, {"Go straight", "4"}});
 
