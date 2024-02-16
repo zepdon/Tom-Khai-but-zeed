@@ -34,7 +34,6 @@ string Scene::getDialogue() {
 
 void Game::addScene(string id, string dialogue) {
   Scene* scene = new Scene(id, dialogue);
-  // scenes.push_back(scene);
   scenes[id] = scene;
 }
 

@@ -30,7 +30,6 @@ class Scene {
 };
 
 class Game {
-  // vector<Scene*> scenes;
   map<string, Scene*> scenes;
   Scene* currentScene;
 
