@@ -8,10 +8,21 @@ Scene::Scene(string id, string dialogue, bool isEndScene=false) {
 }
 
 void Scene::printScene() {
-  cout << dialogue << '\n';
+  int sceneLength = dialogue.length();
+  for (int i = 0; i < sceneLength; i++) {
+    cout << "-";
+  }
+  cout << '\n' << dialogue << '\n';
+  for (int i = 0; i < sceneLength; i++) {
+    cout << "-";
+  }
+  if (options.size() > 0) {
+    cout << "\n\n";
+  }
   for (int i = 0; i < options.size(); i++) {
     cout << i+1 << ". " << options[i].text << '\n';
   }
+  cout << "\n";
 }
 
 void Scene::addOption(string text, string nextSceneId) {
@@ -100,7 +111,7 @@ void Game::cleanUp() {
 
 bool Game::gameEnded() {
   if (currentScene->getIsEndScene()) {
-    cout << currentScene->getDialogue() << '\n';
+    currentScene->printScene();
     cleanUp();
     return true;
   }

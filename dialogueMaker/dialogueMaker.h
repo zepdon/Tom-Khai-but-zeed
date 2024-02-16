@@ -41,19 +41,15 @@ class Game {
   void setCurrentScene(string id);
   void cleanUp();
   void checkIfSceneExists(string id);
+  void askForChoice();
+  void start(string startSceneId);
+  bool gameEnded();
+  void printCurrentScene();
 
   public:
     void addScene(string id, string dialogue, bool isEndScene=false);
 
     void addOption(string sceneId, vector<Option> options);
-
-    void start(string startSceneId);
-
-    void printCurrentScene();
-
-    void askForChoice();
-
-    bool gameEnded();
 
     void printAllScenes();
 
