@@ -40,6 +40,7 @@ class Game {
 
   void setCurrentScene(string id);
   void cleanUp();
+  void checkIfSceneExists(string id);
 
   public:
     void addScene(string id, string dialogue, bool isEndScene=false);

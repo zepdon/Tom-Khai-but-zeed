@@ -47,7 +47,9 @@ void Game::addScene(string id, string dialogue, bool isEndScene) {
 }
 
 void Game::addOption(string sceneId, vector<Option> options) {
+  checkIfSceneExists(sceneId);
   for (int i = 0; i < options.size(); i++) {
+    checkIfSceneExists(options[i].sceneId);
     scenes[sceneId]->addOption(options[i].text, options[i].sceneId);
   }
 }
@@ -112,9 +114,18 @@ void Game::printAllScenes() {
 }
 
 void Game::runGame(string startSceneId) {
+  checkIfSceneExists(startSceneId);
   start(startSceneId);
   while (!gameEnded()) { 
     printCurrentScene();
     askForChoice();
+  }
+}
+
+void Game::checkIfSceneExists(string sceneId) {
+  if (scenes.find(sceneId) == scenes.end()) {
+    cout << "Scene with id \"" << sceneId << "\" does not exist." << '\n';
+    cleanUp();
+    exit(0);
   }
 }
