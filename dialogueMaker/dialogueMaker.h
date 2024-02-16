@@ -27,6 +27,8 @@ class Scene {
     string getId();
 
     string getDialogue();
+
+    int getNumOptions();
 };
 
 class Game {

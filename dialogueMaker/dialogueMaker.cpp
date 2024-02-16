@@ -32,6 +32,10 @@ string Scene::getDialogue() {
   return dialogue;
 }
 
+int Scene::getNumOptions() {
+  return options.size();
+}
+
 void Game::addScene(string id, string dialogue) {
   Scene* scene = new Scene(id, dialogue);
   scenes[id] = scene;
@@ -56,10 +60,27 @@ void Game::printCurrentScene() {
 }
 
 void Game::askForChoice() {
-  int choice;
-  cout << "Enter your choice: ";
-  cin >> choice;
-  setCurrentScene(currentScene->chooseOption(choice));
+  while (1) {
+    string choice;
+    cout << "Enter your choice: ";
+    cin >> choice;
+
+    int choiceInt;
+    try {
+      choiceInt = stoi(choice);
+    } catch (invalid_argument e) {
+      cout << "Invalid choice." << '\n';
+      continue;
+    }
+
+    if (choiceInt > 0 && choiceInt <= currentScene->getNumOptions()) {
+      string nextSceneId = currentScene->chooseOption(choiceInt);
+      setCurrentScene(nextSceneId);
+      break;
+    } else {
+      cout << "Invalid choice." << '\n';
+    }
+  }
 }
 
 void Game::printEndGame() {
