@@ -1,9 +1,10 @@
 #include <iostream>
 #include "dialogueMaker.h"
 
-Scene::Scene(string id, string dialogue) {
+Scene::Scene(string id, string dialogue, bool isEndScene=false) {
   this->id = id;
   this->dialogue = dialogue;
+  this->isEndScene = isEndScene;
 }
 
 void Scene::printScene() {
@@ -36,8 +37,12 @@ int Scene::getNumOptions() {
   return options.size();
 }
 
-void Game::addScene(string id, string dialogue) {
-  Scene* scene = new Scene(id, dialogue);
+bool Scene::getIsEndScene() {
+  return isEndScene;
+}
+
+void Game::addScene(string id, string dialogue, bool isEndScene) {
+  Scene* scene = new Scene(id, dialogue, isEndScene);
   scenes[id] = scene;
 }
 
@@ -83,10 +88,6 @@ void Game::askForChoice() {
   }
 }
 
-void Game::printEndGame() {
-  cout << "Game over." << '\n';
-}
-
 void Game::cleanUp() {
   for (auto it = scenes.begin(); it != scenes.end(); it++) {
     delete it->second;
@@ -95,9 +96,9 @@ void Game::cleanUp() {
   currentScene = NULL;
 }
 
-bool Game::gameEnded(string endSceneId) {
-  if (currentScene->getId() == endSceneId) {
-    printEndGame();
+bool Game::gameEnded() {
+  if (currentScene->getIsEndScene()) {
+    cout << currentScene->getDialogue() << '\n';
     cleanUp();
     return true;
   }
@@ -107,5 +108,13 @@ bool Game::gameEnded(string endSceneId) {
 void Game::printAllScenes() {
   for (auto it = scenes.begin(); it != scenes.end(); it++) {
     cout << it->first << ": " << it->second->getDialogue() << '\n';
+  }
+}
+
+void Game::runGame(string startSceneId) {
+  start(startSceneId);
+  while (!gameEnded()) { 
+    printCurrentScene();
+    askForChoice();
   }
 }

@@ -13,10 +13,11 @@ struct Option {
 class Scene {
   string id;
   string dialogue;
+  bool isEndScene;
   vector<Option> options;
 
   public:
-    Scene(string id, string dialogue);
+    Scene(string id, string dialogue, bool isEndScene);
 
     void printScene(); 
 
@@ -29,18 +30,19 @@ class Scene {
     string getDialogue();
 
     int getNumOptions();
+
+    bool getIsEndScene();
 };
 
 class Game {
   map<string, Scene*> scenes;
   Scene* currentScene;
 
-  void printEndGame();
   void setCurrentScene(string id);
   void cleanUp();
 
   public:
-    void addScene(string id, string dialogue);
+    void addScene(string id, string dialogue, bool isEndScene=false);
 
     void addOption(string sceneId, vector<Option> options);
 
@@ -50,8 +52,10 @@ class Game {
 
     void askForChoice();
 
-    bool gameEnded(string endSceneId);
+    bool gameEnded();
 
     void printAllScenes();
+
+    void runGame(string startSceneId);
 };
 
