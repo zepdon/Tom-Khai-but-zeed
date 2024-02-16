@@ -34,6 +34,8 @@ class Game {
   Scene* currentScene;
 
   void printEndGame();
+  void setCurrentScene(string id);
+  void cleanUp();
 
   public:
     void addScene(string id, string dialogue);
@@ -41,16 +43,12 @@ class Game {
     void addOption(string sceneId, vector<Option> options);
 
     void start(string startSceneId);
-  
-    void setCurrentScene(string id);
 
     void printCurrentScene();
 
     void askForChoice();
 
     bool gameEnded(string endSceneId);
-
-    void cleanUp();
 
     void printAllScenes();
 };
