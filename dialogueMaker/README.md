@@ -11,6 +11,5 @@ g++ -Wall main.cpp dialogueMaker/dialogueMaker.cpp -o main -std=c++11
 ./main
 ```
 ## Example
-![cover](cover.png)
-![result](result.png)
+Please take a look at [`main.cpp`](https://github.com/BallballTH/Tom-Khai/blob/main/main.cpp)
 
