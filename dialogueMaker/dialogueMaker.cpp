@@ -1,7 +1,7 @@
 #include <iostream>
 #include "dialogueMaker.h"
 
-Scene::Scene(string id, string dialogue, bool isEndScene=false) {
+Scene::Scene(std::string id, std::string dialogue, bool isEndScene=false) {
   this->id = id;
   this->dialogue = dialogue;
   this->isEndScene = isEndScene;
@@ -10,37 +10,37 @@ Scene::Scene(string id, string dialogue, bool isEndScene=false) {
 void Scene::printScene() {
   int sceneLength = dialogue.length();
   for (int i = 0; i < sceneLength; i++) {
-    cout << "-";
+    std::cout << "-";
   }
-  cout << '\n' << dialogue << '\n';
+  std::cout << '\n' << dialogue << '\n';
   for (int i = 0; i < sceneLength; i++) {
-    cout << "-";
+    std::cout << "-";
   }
   if (options.size() > 0) {
-    cout << "\n\n";
+    std::cout << "\n\n";
   }
   for (int i = 0; i < options.size(); i++) {
-    cout << i+1 << ". " << options[i].text << '\n';
+    std::cout << i+1 << ". " << options[i].text << '\n';
   }
-  cout << "\n";
+  std::cout << "\n";
 }
 
-void Scene::addOption(string text, string nextSceneId) {
+void Scene::addOption(std::string text, std::string nextSceneId) {
   Option option;
   option.text = text;
   option.sceneId = nextSceneId;
   options.push_back(option);
 }
 
-string Scene::chooseOption(int choice) {
+std::string Scene::chooseOption(int choice) {
   return options[choice-1].sceneId;
 }
 
-string Scene::getId() {
+std::string Scene::getId() {
   return id;
 }
 
-string Scene::getDialogue() {
+std::string Scene::getDialogue() {
   return dialogue;
 }
 
@@ -52,12 +52,12 @@ bool Scene::getIsEndScene() {
   return isEndScene;
 }
 
-void Game::addScene(string id, string dialogue, bool isEndScene) {
+void Game::addScene(std::string id, std::string dialogue, bool isEndScene) {
   Scene* scene = new Scene(id, dialogue, isEndScene);
   Game::scenes[id] = scene;
 }
 
-void Game::addOption(string sceneId, vector<Option> options) {
+void Game::addOption(std::string sceneId, std::vector<Option> options) {
   checkIfSceneExists(sceneId);
   for (int i = 0; i < options.size(); i++) {
     checkIfSceneExists(options[i].sceneId);
@@ -65,11 +65,11 @@ void Game::addOption(string sceneId, vector<Option> options) {
   }
 }
 
-void Game::start(string startSceneId) {
+void Game::start(std::string startSceneId) {
   Game::currentScene = Game::scenes[startSceneId];
 }
 
-void Game::setCurrentScene(string id) {
+void Game::setCurrentScene(std::string id) {
   Game::currentScene = Game::scenes[id];
 }
 
@@ -79,24 +79,24 @@ void Game::printCurrentScene() {
 
 void Game::askForChoice() {
   while (1) {
-    string choice;
-    cout << "Enter your choice: ";
-    cin >> choice;
+    std::string choice;
+    std::cout << "Enter your choice: ";
+    std::cin >> choice;
 
     int choiceInt;
     try {
       choiceInt = stoi(choice);
-    } catch (invalid_argument e) {
-      cout << "Invalid choice." << '\n';
+    } catch (std::invalid_argument e) {
+      std::cout << "Invalid choice." << '\n';
       continue;
     }
 
     if (choiceInt > 0 && choiceInt <= Game::currentScene->getNumOptions()) {
-      string nextSceneId = Game::currentScene->chooseOption(choiceInt);
+      std::string nextSceneId = Game::currentScene->chooseOption(choiceInt);
       setCurrentScene(nextSceneId);
       break;
     } else {
-      cout << "Invalid choice." << '\n';
+      std::cout << "Invalid choice." << '\n';
     }
   }
 }
@@ -120,11 +120,11 @@ bool Game::gameEnded() {
 
 void Game::printAllScenes() {
   for (auto it = Game::scenes.begin(); it != Game::scenes.end(); it++) {
-    cout << it->first << ": " << it->second->getDialogue() << '\n';
+    std::cout << it->first << ": " << it->second->getDialogue() << '\n';
   }
 }
 
-void Game::runGame(string startSceneId) {
+void Game::runGame(std::string startSceneId) {
   checkIfSceneExists(startSceneId);
   start(startSceneId);
   while (!gameEnded()) { 
@@ -133,9 +133,9 @@ void Game::runGame(string startSceneId) {
   }
 }
 
-void Game::checkIfSceneExists(string sceneId) {
+void Game::checkIfSceneExists(std::string sceneId) {
   if (Game::scenes.find(sceneId) == Game::scenes.end()) {
-    cout << "Scene with id \"" << sceneId << "\" does not exist." << '\n';
+    std::cout << "Scene with id \"" << sceneId << "\" does not exist." << '\n';
     cleanUp();
     exit(0);
   }

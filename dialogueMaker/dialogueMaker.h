@@ -1,32 +1,31 @@
 #include <map>
 #include <vector>
 #include <string>
-using namespace std;
 
 class Scene;
 
 struct Option {
-  string text;
-  string sceneId;
+  std::string text;
+  std::string sceneId;
 };
 
 class Scene {
-  string id;
-  string dialogue;
+  std::string id;
+  std::string dialogue;
   bool isEndScene;
-  vector<Option> options;
+  std::vector<Option> options;
 
-  Scene(string id, string dialogue, bool isEndScene);
+  Scene(std::string id, std::string dialogue, bool isEndScene);
 
   void printScene(); 
 
-  void addOption(string text, string nextSceneId);
+  void addOption(std::string text, std::string nextSceneId);
 
-  string chooseOption(int choice);
+  std::string chooseOption(int choice);
 
-  string getId();
+  std::string getId();
 
-  string getDialogue();
+  std::string getDialogue();
 
   int getNumOptions();
 
@@ -36,24 +35,24 @@ class Scene {
 };
 
 class Game {
-  static inline map<string, Scene*> scenes;
+  static inline std::map<std::string, Scene*> scenes;
   static inline Scene* currentScene;
 
-  static void setCurrentScene(string id);
+  static void setCurrentScene(std::string id);
   static void cleanUp();
-  static void checkIfSceneExists(string id);
+  static void checkIfSceneExists(std::string id);
   static void askForChoice();
-  static void start(string startSceneId);
+  static void start(std::string startSceneId);
   static bool gameEnded();
   static void printCurrentScene();
 
   public:
-    static void addScene(string id, string dialogue, bool isEndScene=false);
+    static void addScene(std::string id, std::string dialogue, bool isEndScene=false);
 
-    static void addOption(string sceneId, vector<Option> options);
+    static void addOption(std::string sceneId, std::vector<Option> options);
 
     static void printAllScenes();
 
-    static void runGame(string startSceneId);
+    static void runGame(std::string startSceneId);
 };
 
