@@ -9,6 +9,7 @@ std::map<std::string, std::string> decorations = {
   {"r", "\033[31m"}, // Red
   {"g", "\033[32m"}, // Green
   {"y", "\033[33m"}, // Yellow
+  {"random", "\033[38;2;69;211;76m"}, // rgb(69, 211, 76)
 };
 
 std::string parseText(std::string text) {
@@ -39,12 +40,16 @@ std::string parseText(std::string text) {
       parsedText += text[i];
     }
   }
+
+  for (int i = 0; i < tags.size(); i++) {
+    parsedText += "\033[m";
+  }
   return parsedText;
 }
 
 
 int main() {
-  std::string r = parseText("[b]Hello[/], [ul][y]สวัสดี![/] Hello, [r][b]What[/][/] the[/]");
+  std::string r = parseText("[random]Hello[/], [ul][y]สวัสดี![/] Hello, [r][b]What[/][/] the[/]");
   std::cout << r << '\n';
   return 0;
 }
