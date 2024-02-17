@@ -16,43 +16,44 @@ class Scene {
   bool isEndScene;
   vector<Option> options;
 
-  public:
-    Scene(string id, string dialogue, bool isEndScene);
+  Scene(string id, string dialogue, bool isEndScene);
 
-    void printScene(); 
+  void printScene(); 
 
-    void addOption(string text, string nextSceneId);
+  void addOption(string text, string nextSceneId);
 
-    string chooseOption(int choice);
+  string chooseOption(int choice);
 
-    string getId();
+  string getId();
 
-    string getDialogue();
+  string getDialogue();
 
-    int getNumOptions();
+  int getNumOptions();
 
-    bool getIsEndScene();
+  bool getIsEndScene();
+
+  friend class Game;
 };
 
 class Game {
-  map<string, Scene*> scenes;
-  Scene* currentScene;
+  static inline map<string, Scene*> scenes;
+  static inline Scene* currentScene;
 
-  void setCurrentScene(string id);
-  void cleanUp();
-  void checkIfSceneExists(string id);
-  void askForChoice();
-  void start(string startSceneId);
-  bool gameEnded();
-  void printCurrentScene();
+  static void setCurrentScene(string id);
+  static void cleanUp();
+  static void checkIfSceneExists(string id);
+  static void askForChoice();
+  static void start(string startSceneId);
+  static bool gameEnded();
+  static void printCurrentScene();
 
   public:
-    void addScene(string id, string dialogue, bool isEndScene=false);
+    static void addScene(string id, string dialogue, bool isEndScene=false);
 
-    void addOption(string sceneId, vector<Option> options);
+    static void addOption(string sceneId, vector<Option> options);
 
-    void printAllScenes();
+    static void printAllScenes();
 
-    void runGame(string startSceneId);
+    static void runGame(string startSceneId);
 };
 

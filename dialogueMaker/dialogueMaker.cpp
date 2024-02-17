@@ -54,27 +54,27 @@ bool Scene::getIsEndScene() {
 
 void Game::addScene(string id, string dialogue, bool isEndScene) {
   Scene* scene = new Scene(id, dialogue, isEndScene);
-  scenes[id] = scene;
+  Game::scenes[id] = scene;
 }
 
 void Game::addOption(string sceneId, vector<Option> options) {
   checkIfSceneExists(sceneId);
   for (int i = 0; i < options.size(); i++) {
     checkIfSceneExists(options[i].sceneId);
-    scenes[sceneId]->addOption(options[i].text, options[i].sceneId);
+    Game::scenes[sceneId]->addOption(options[i].text, options[i].sceneId);
   }
 }
 
 void Game::start(string startSceneId) {
-  currentScene = scenes[startSceneId];
+  Game::currentScene = Game::scenes[startSceneId];
 }
 
 void Game::setCurrentScene(string id) {
-  currentScene = scenes[id];
+  Game::currentScene = Game::scenes[id];
 }
 
 void Game::printCurrentScene() {
-  currentScene->printScene();
+  Game::currentScene->printScene();
 }
 
 void Game::askForChoice() {
@@ -91,8 +91,8 @@ void Game::askForChoice() {
       continue;
     }
 
-    if (choiceInt > 0 && choiceInt <= currentScene->getNumOptions()) {
-      string nextSceneId = currentScene->chooseOption(choiceInt);
+    if (choiceInt > 0 && choiceInt <= Game::currentScene->getNumOptions()) {
+      string nextSceneId = Game::currentScene->chooseOption(choiceInt);
       setCurrentScene(nextSceneId);
       break;
     } else {
@@ -102,16 +102,16 @@ void Game::askForChoice() {
 }
 
 void Game::cleanUp() {
-  for (auto it = scenes.begin(); it != scenes.end(); it++) {
+  for (auto it = Game::scenes.begin(); it != Game::scenes.end(); it++) {
     delete it->second;
   }
-  scenes.clear();
-  currentScene = NULL;
+  Game::scenes.clear();
+  Game::currentScene = NULL;
 }
 
 bool Game::gameEnded() {
-  if (currentScene->getIsEndScene()) {
-    currentScene->printScene();
+  if (Game::currentScene->getIsEndScene()) {
+    Game::currentScene->printScene();
     cleanUp();
     return true;
   }
@@ -119,7 +119,7 @@ bool Game::gameEnded() {
 }
 
 void Game::printAllScenes() {
-  for (auto it = scenes.begin(); it != scenes.end(); it++) {
+  for (auto it = Game::scenes.begin(); it != Game::scenes.end(); it++) {
     cout << it->first << ": " << it->second->getDialogue() << '\n';
   }
 }
@@ -134,7 +134,7 @@ void Game::runGame(string startSceneId) {
 }
 
 void Game::checkIfSceneExists(string sceneId) {
-  if (scenes.find(sceneId) == scenes.end()) {
+  if (Game::scenes.find(sceneId) == Game::scenes.end()) {
     cout << "Scene with id \"" << sceneId << "\" does not exist." << '\n';
     cleanUp();
     exit(0);
