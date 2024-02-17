@@ -7,7 +7,7 @@ Coming Soon
 1. Add scenes and choices in `main.cpp`
 2. Compile with this command
 ```
-g++ -Wall main.cpp dialogueMaker/dialogueMaker.cpp -o main -std=c++11
+g++ -Wall main.cpp dialogueMaker/dialogueMaker.cpp -o main -std=c++17
 ./main
 ```
 ## Example
