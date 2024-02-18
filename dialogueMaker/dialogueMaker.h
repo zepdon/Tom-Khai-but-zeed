@@ -45,6 +45,7 @@ class Game {
   static void start(std::string startSceneId);
   static bool gameEnded();
   static void printCurrentScene();
+  static std::string parseText(std::string text);
 
   public:
     static void addScene(std::string id, std::string dialogue, bool isEndScene=false);
