@@ -55,7 +55,7 @@ bool Scene::getIsEndScene() {
 }
 
 void Game::addScene(std::string id, std::string dialogue, bool isEndScene) {
-  Scene* scene = new Scene(id, dialogue, isEndScene);
+  Scene* scene = new Scene(id, Game::parseText(dialogue), isEndScene);
   Game::scenes[id] = scene;
 }
 
@@ -76,6 +76,7 @@ void Game::setCurrentScene(std::string id) {
 }
 
 void Game::printCurrentScene() {
+  std::cout << "\033[2J\033[1;1H";
   Game::currentScene->printScene();
 }
 
@@ -113,7 +114,7 @@ void Game::cleanUp() {
 
 bool Game::gameEnded() {
   if (Game::currentScene->getIsEndScene()) {
-    Game::currentScene->printScene();
+    Game::printCurrentScene();
     cleanUp();
     return true;
   }
@@ -141,4 +142,46 @@ void Game::checkIfSceneExists(std::string sceneId) {
     cleanUp();
     exit(0);
   }
+}
+
+std::string Game::parseText(std::string text) {
+  std::map<std::string, std::string> decorations = {
+    {"b", "\033[1m"}, // Bold
+    {"ul", "\033[4m"}, // Underline
+    {"r", "\033[31m"}, // Red
+    {"g", "\033[32m"}, // Green
+    {"y", "\033[33m"}, // Yellow
+    {"random", "\033[38;2;69;211;76m"}, // rgb(69, 211, 76)
+  };
+  std::vector<std::string> tags;
+  std::string parsedText = "";
+  std::string currentTag = "";
+
+  for (int i = 0; i < text.size(); i++) {
+    if (text[i] == '[') {
+      i++;
+      while (text[i] != ']') {
+        currentTag += text[i];
+        i++;
+      }
+      if (currentTag == "/") {
+        tags.pop_back();
+        parsedText += "\033[m";
+        for (int i = 0; i < tags.size(); i++) {
+          parsedText += decorations[tags[i]];
+        }
+      } else {
+        tags.push_back(currentTag);
+        parsedText += decorations[currentTag];
+      }
+      currentTag = "";
+    } else {
+      parsedText += text[i];
+    }
+  }
+
+  for (int i = 0; i < tags.size(); i++) {
+    parsedText += "\033[m";
+  }
+  return parsedText;
 }

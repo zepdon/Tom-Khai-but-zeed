@@ -2,7 +2,7 @@
 
 int main() {
   // Create scenes
-  Game::addScene("begin", "You are in a forest. What do you do?");
+  Game::addScene("begin", "You are in [r]a forest[/]. [ul]What do you do?[/]");
   Game::addScene("2", "You see a bear. What do you do?");
   Game::addScene("3", "You see a river. What do you do?");
   Game::addScene("4", "You see a bridge. What do you do?");
