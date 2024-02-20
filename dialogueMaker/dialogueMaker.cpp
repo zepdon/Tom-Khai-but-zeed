@@ -76,6 +76,7 @@ void Game::setCurrentScene(std::string id) {
 }
 
 void Game::printCurrentScene() {
+  std::cout << "\033[2J\033[1;1H";
   Game::currentScene->printScene();
 }
 
@@ -113,7 +114,7 @@ void Game::cleanUp() {
 
 bool Game::gameEnded() {
   if (Game::currentScene->getIsEndScene()) {
-    Game::currentScene->printScene();
+    Game::printCurrentScene();
     cleanUp();
     return true;
   }

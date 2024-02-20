@@ -2,8 +2,6 @@
 #include <vector>
 #include <string>
 
-class Scene;
-
 struct Option {
   std::string text;
   std::string sceneId;
