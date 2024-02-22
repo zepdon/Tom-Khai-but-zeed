@@ -1,14 +1,13 @@
 #include <iostream>
 #include "dialogueMaker.h"
 
-Scene::Scene(std::string id, std::string dialogue, bool isEndScene=false) {
+Scene::Scene(std::string id, std::string dialogue, bool isEndScene) {
   this->id = id;
   this->dialogue = dialogue;
   this->isEndScene = isEndScene;
 }
 
 void Scene::printScene() {
-  int sceneLength = dialogue.length();
   /*for (int i = 0; i < sceneLength; i++) {
     std::cout << "-";
   }*/
@@ -27,15 +26,20 @@ void Scene::printScene() {
   std::cout << "\n";
 }
 
-void Scene::addOption(std::string text, std::string nextSceneId) {
+void Scene::addOption(std::string text, std::string nextSceneId, std::string event) {
   Option option;
   option.text = text;
   option.sceneId = nextSceneId;
+  option.event = event;
   options.push_back(option);
 }
 
-std::string Scene::chooseOption(int choice) {
-  return options[choice-1].sceneId;
+void Scene::addEvent(std::string event) {
+  events.insert(event);
+}
+
+std::pair<std::string, std::string> Scene::chooseOption(int choice) {
+  return {options[choice-1].sceneId, options[choice-1].event};
 }
 
 std::string Scene::getId() {
@@ -54,16 +58,25 @@ bool Scene::getIsEndScene() {
   return isEndScene;
 }
 
+bool Scene::hasEvent(std::string event) {
+  return events.find(event) != events.end();
+}
+
 void Game::addScene(std::string id, std::string dialogue, bool isEndScene) {
   Scene* scene = new Scene(id, Game::parseText(dialogue), isEndScene);
   Game::scenes[id] = scene;
+}
+
+void Game::addEvent(std::string sceneId, std::string event) {
+  checkIfSceneExists(sceneId);
+  Game::scenes[sceneId]->addEvent(event);
 }
 
 void Game::addOption(std::string sceneId, std::vector<Option> options) {
   checkIfSceneExists(sceneId);
   for (int i = 0; i < options.size(); i++) {
     checkIfSceneExists(options[i].sceneId);
-    Game::scenes[sceneId]->addOption(options[i].text, options[i].sceneId);
+    Game::scenes[sceneId]->addOption(options[i].text, options[i].sceneId, options[i].event);
   }
 }
 
@@ -73,11 +86,20 @@ void Game::start(std::string startSceneId) {
 
 void Game::setCurrentScene(std::string id) {
   Game::currentScene = Game::scenes[id];
+  for (auto it = Game::currentEvents.begin(); it != Game::currentEvents.end(); it++) {
+    if (Game::currentScene->hasEvent(*it)) {
+      Game::currentScene = Game::scenes[*it];
+    }
+  }
 }
 
 void Game::printCurrentScene() {
   std::cout << "\033[2J\033[1;1H";
   Game::currentScene->printScene();
+}
+
+void Game::addCurrentEvent(std::string event) {
+  currentEvents.insert(event);
 }
 
 void Game::askForChoice() {
@@ -95,8 +117,11 @@ void Game::askForChoice() {
     }
 
     if (choiceInt > 0 && choiceInt <= Game::currentScene->getNumOptions()) {
-      std::string nextSceneId = Game::currentScene->chooseOption(choiceInt);
-      setCurrentScene(nextSceneId);
+      std::pair<std::string, std::string> nextScene = Game::currentScene->chooseOption(choiceInt);
+      std::string nextSceneId = nextScene.first;
+      std::string event = nextScene.second;
+      Game::setCurrentScene(nextSceneId);
+      Game::addCurrentEvent(event);
       break;
     } else {
       std::cout << "Invalid choice." << '\n';
