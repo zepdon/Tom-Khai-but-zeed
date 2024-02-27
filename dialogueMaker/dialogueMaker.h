@@ -1,3 +1,5 @@
+#pragma once
+
 #include <map>
 #include <vector>
 #include <string>
@@ -54,14 +56,14 @@ class Game {
   static std::string parseText(std::string text);
   static void addCurrentEvent(std::string event);
 
-  public:
-    static void addScene(std::string id, std::string dialogue, bool isEndScene=false);
+public:
+  static void addScene(std::string id, std::string dialogue, bool isEndScene=false);
 
-    static void addEvent(std::string sceneId, std::string event);
+  static void addEvent(std::string sceneId, std::string event);
 
-    static void addOption(std::string sceneId, std::vector<Option> options);
+  static void addOption(std::string sceneId, std::string optionText, std::string nextSceneId, std::string event="");
 
-    static void printAllScenes();
+  static void printAllScenes();
 
-    static void runGame(std::string startSceneId);
+  static void runGame(std::string startSceneId);
 };

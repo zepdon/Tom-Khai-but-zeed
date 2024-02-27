@@ -1,5 +1,6 @@
 #include <iostream>
 #include "dialogueMaker.h"
+#include <Windows.h>
 
 Scene::Scene(std::string id, std::string dialogue, bool isEndScene) {
   this->id = id;
@@ -8,15 +9,9 @@ Scene::Scene(std::string id, std::string dialogue, bool isEndScene) {
 }
 
 void Scene::printScene() {
-  /*for (int i = 0; i < sceneLength; i++) {
-    std::cout << "-";
-  }*/
-  std::cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
+  std::cout << "---------------------------------------------------------------------------------------------------------------------------";
   std::cout << '\n' << dialogue << '\n';
-  std::cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
-  /*for (int i = 0; i < sceneLength; i++) {
-    std::cout << "-";
-  }*/
+  std::cout << "---------------------------------------------------------------------------------------------------------------------------";
   if (options.size() > 0) {
     std::cout << "\n\n";
   }
@@ -72,12 +67,9 @@ void Game::addEvent(std::string sceneId, std::string event) {
   Game::scenes[sceneId]->addEvent(event);
 }
 
-void Game::addOption(std::string sceneId, std::vector<Option> options) {
+void Game::addOption(std::string sceneId, std::string optionText, std::string nextSceneId, std::string event) {
   checkIfSceneExists(sceneId);
-  for (int i = 0; i < options.size(); i++) {
-    checkIfSceneExists(options[i].sceneId);
-    Game::scenes[sceneId]->addOption(parseText(options[i].text), options[i].sceneId, options[i].event);
-  }
+  Game::scenes[sceneId]->addOption(parseText(optionText), nextSceneId, event);
 }
 
 void Game::start(std::string startSceneId) {
@@ -105,12 +97,17 @@ void Game::addCurrentEvent(std::string event) {
 void Game::askForChoice() {
   while (1) {
     std::string choice;
-    std::cout << "Enter your choice: ";
+    std::string x = "Enter Your Choice: ";
+    for (int i = 0; i < x[i]; i++)
+    {
+      std::cout << x[i];
+      Sleep(15);
+    }
     std::cin >> choice;
 
     int choiceInt;
     try {
-      choiceInt = stoi(choice);
+      choiceInt = std::stoi(choice);
     } catch (std::invalid_argument e) {
       std::cout << "Invalid choice." << '\n';
       continue;
@@ -134,7 +131,7 @@ void Game::cleanUp() {
     delete it->second;
   }
   Game::scenes.clear();
-  Game::currentScene = NULL;
+  Game::currentScene = nullptr;
 }
 
 bool Game::gameEnded() {
@@ -176,7 +173,7 @@ std::string Game::parseText(std::string text) {
     {"r", "\033[31m"}, // Red
     {"g", "\033[32m"}, // Green
     {"y", "\033[33m"}, // Yellow
-    {"random", "\033[38;2;69;211;76m"}, // rgb(69, 211, 76)
+    {"random", "\033[38;2;76;42;107m"}, // rgb(69, 211, 76)
   };
   std::vector<std::string> tags;
   std::string parsedText = "";
