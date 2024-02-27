@@ -219,3 +219,9 @@ void Game::addPlayer(player p){
   Player = p;
 }
 
+void Game::printstats(){
+  Player.printstats();
+}
+
+
+
