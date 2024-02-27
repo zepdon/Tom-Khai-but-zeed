@@ -1,0 +1,17 @@
+##begin
+You are in [r]a forest[/]. [ul]What do you do?[/]
+
+##2
+You see a bear. What do you do?
+
+##3
+You see a river. What do you do?
+
+##4
+You see a bridge. What do you do?
+
+#bad_ending
+You died.
+
+#nice_ending
+You survived.
