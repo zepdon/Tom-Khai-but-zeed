@@ -8,9 +8,11 @@ int main(){
   ifstream source;
   source.open("dialogue.txt");
   string textline;
-  char format[]="%s"
+  char format[]="%s";
+  char id[10];
+  char dialogue[300];
   while(getline(source,textline)){
-    sscanf(textline.c_str(),format);
+    sscanf(textline.c_str(),format,id,dialogue);
   }
 
   //savepoint?
