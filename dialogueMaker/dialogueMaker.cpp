@@ -109,8 +109,14 @@ void Game::addCurrentEvent(std::string event) {
 void Game::askForChoice() {
   while (1) {
     std::string choice;
-    std::cout << "Enter your choice: ";
+    std::cout << "Enter your choice: (q to quit game): ";
     std::cin >> choice;
+
+    if (choice == "q") {
+      std::cout << "Thanks for playing!\n";
+      cleanUp();
+      exit(0);
+    }
 
     int choiceInt;
     try {
