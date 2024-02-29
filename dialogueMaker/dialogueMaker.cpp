@@ -14,7 +14,8 @@ void Scene::printScene() {
   std::cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
   std::cout << '\n' << dialogue << '\n';
   std::cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
-  std::cout << '\n';
+  std::cout << '\n';\
+  Playsound::playsoundss("1-2");
   Game::printstats();
   /*for (int i = 0; i < sceneLength; i++) {
     std::cout << "-";
@@ -223,5 +224,11 @@ void Game::printstats(){
   Player.printstats();
 }
 
+void Game::LoadSave(const std::string& filename){
+  Player.LoadFromFile(filename);
+}
 
+void Game::SaveFile(const std::string& filename){
+  Player.SaveToFile(filename);
+}
 

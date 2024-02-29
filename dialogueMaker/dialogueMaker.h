@@ -1,4 +1,5 @@
 #include "../Player/player.h"
+#include "../Sound/Playsound.h"
 #include <map>
 #include <vector>
 #include <string>
@@ -58,7 +59,12 @@ class Game {
   static std::string parseText(std::string text);
   static void addCurrentEvent(std::string event);
 
+  friend class player;
+
   public:
+    static void SaveFile(const std::string& filename);
+
+    static void LoadSave(const std::string& filename);
 
     static void printstats();
 

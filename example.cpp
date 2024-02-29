@@ -4,6 +4,8 @@
 int main() {
   player kaitom;
   Game::addPlayer(kaitom);
+  Game::LoadSave("save.txt");
+
   // Create scenes
   Game::addScene("begin", "You are in [r]a forest[/]. [ul]What do you do?[/]");
   Game::addScene("2", "You see a bear. What do you do?");
