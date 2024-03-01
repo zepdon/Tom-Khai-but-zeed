@@ -1,0 +1,16 @@
+begin|Go left|2|
+begin|Go right|3|
+begin|Go straight|4|
+2|Run|begin
+2|Fight|bad_ending|
+3|Swim|bad_ending|
+3|Walk around|begin|
+4|Cross it|5|
+4|Jump off|bad_ending
+5|[b]Special?[/]|6|
+5|What the |3|
+5|Go to something|4|6event_1
+6|Go to 5|5|
+6|Go to 4|4|
+6event_1|Kill Yourself|bad_ending
+6event_1|Gambit|nice_ending

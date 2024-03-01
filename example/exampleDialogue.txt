@@ -1,0 +1,9 @@
+begin|You are in [r]a forest[/]. [ul]What do you do[/]?
+2|you see a bear
+3|you see a river
+4|you see a bridge
+bad_ending|died|true
+nice_ending|survived|true
+5|you are in a [r]forest[/].
+6|You rest for a while. [ul]What do you do?[/]
+6event_1|You are in [r]a special forest[/].
