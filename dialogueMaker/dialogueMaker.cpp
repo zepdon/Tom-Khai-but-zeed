@@ -14,7 +14,7 @@ void Scene::printScene() {
   }*/
   std::cout << "---------------------------------------------------------------------------------------------------------------------------";
   //std::cout << '\n' << dialogue << '\n';
-  std::cout<< '\n';
+  std::cout << '\n';
   for (int i = 0; i < dialogue.size(); i++)
   {
     std::cout << dialogue[i];
@@ -22,6 +22,8 @@ void Scene::printScene() {
   }
   std::cout << '\n';
   std::cout << "---------------------------------------------------------------------------------------------------------------------------";
+  std::cout << '\n';
+  Game::printstats();
   /*for (int i = 0; i < sceneLength; i++) {
     std::cout << "-";
   }*/
@@ -34,11 +36,12 @@ void Scene::printScene() {
   std::cout << "\n";
 }
 
-void Scene::addOption(std::string text, std::string nextSceneId, std::string event) {
+void Scene::addOption(std::string text, std::string nextSceneId, std::string event, std::string statchange) {
   Option option;
   option.text = text;
   option.sceneId = nextSceneId;
   option.event = event;
+  option.statchange = statchange;
   options.push_back(option);
 }
 
@@ -84,7 +87,7 @@ void Game::addOption(std::string sceneId, std::vector<Option> options) {
   checkIfSceneExists(sceneId);
   for (int i = 0; i < options.size(); i++) {
     checkIfSceneExists(options[i].sceneId);
-    Game::scenes[sceneId]->addOption(parseText(options[i].text), options[i].sceneId, options[i].event);
+    Game::scenes[sceneId]->addOption(parseText(options[i].text), options[i].sceneId, options[i].event, options[i].statchange);
   }
 }
 
@@ -113,7 +116,7 @@ void Game::addCurrentEvent(std::string event) {
 void Game::askForChoice() {
   while (1) {
     std::string choice;
-    std::string x = "Enter Your Choice: ";
+    std::string x = "Enter Your Choice: (q to quit game): ";
     for (int i = 0; i < x[i]; i++)
     {
       std::cout << x[i];
@@ -121,6 +124,12 @@ void Game::askForChoice() {
     }
 //    std::cout << "\n\nEnter your choice: ";
     std::cin >> choice;
+
+    if (choice == "q") {
+      std::cout << "Thanks for playing!\n";
+      cleanUp();
+      exit(0);
+    }
 
     int choiceInt;
     try {
@@ -132,6 +141,7 @@ void Game::askForChoice() {
 
     if (choiceInt > 0 && choiceInt <= Game::currentScene->getNumOptions()) {
       std::pair<std::string, std::string> nextScene = Game::currentScene->chooseOption(choiceInt);
+      Player.changestat(Game::currentScene->options[choiceInt-1].statchange);
       std::string nextSceneId = nextScene.first;
       std::string event = nextScene.second;
       Game::setCurrentScene(nextSceneId);
@@ -223,4 +233,12 @@ std::string Game::parseText(std::string text) {
     parsedText += "\033[m";
   }
   return parsedText;
+}
+
+void Game::addPlayer(player p){
+  Player = p;
+}
+
+void Game::printstats(){
+  Player.printstats();
 }
