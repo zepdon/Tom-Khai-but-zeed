@@ -4,6 +4,7 @@
 int main() {
   player kaitom;
   Game::addPlayer(kaitom);
+
   // Create scenes
   Game::addScene("begin", "You are in [r]a forest[/]. [ul]What do you do?[/]");
   Game::addScene("2", "You see a bear. What do you do?");
@@ -23,7 +24,7 @@ int main() {
   Game::addEvent("6", "6event_1");
 
   // Add options to scenes
-  Game::addOption("begin", {{"Go left", "2", "event_1","hp - 50"}, {"Go right", "3",}, {"Go straight", "4","","hp - 50"}});
+  Game::addOption("begin", {{"Go left", "2", "event_1","hp - 10"}, {"Go right", "3",}, {"Go straight", "4","","hp - 50"}});
 
   Game::addOption("2", {
     {"Run", "begin"},
@@ -58,6 +59,6 @@ int main() {
   });
 
   // Game loop
-  Game::runGame("begin");
+  Game::LoadSave("save.txt");
 }
 
