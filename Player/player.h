@@ -11,23 +11,12 @@ class player{
         double hpmax = 100;
         double sanity = 100;
         double sanity_max = 100;
-        std::string currentScene;
     public:
         bool CheckIfdied();
         void printstats();
         void changestat(const std::string& change);                                //use keyword "hp" or "sa" example: "hp-1"
-        void SaveToFile(const std::string& filename);
-        void LoadFromFile(const std::string& filename);
+        friend class Game;
 };
 
 void movecursor(int,int);
 int currentcursor(char);
-
-
-// int main() {
-//     player player1;
-//     player1.LoadFromFile("Save.txt");
-//     player1.printstats();
-
-//     return 0;
-// }

@@ -11,3 +11,8 @@ void Playsound::StopPlay() {
     PlaySound(NULL, NULL, 0);
 }
 
+// int main(){
+//     int  x;
+//     Playsound::playsoundss("1-2");
+//     std::cin >> x;
+// }

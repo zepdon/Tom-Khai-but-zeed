@@ -104,39 +104,3 @@ bool player::CheckIfdied(){
     }else return false;
 }
 
-
-void player::SaveToFile(const std::string& filename) {
-    std::ofstream outFile(filename);                     // Open the file for writing
-    if (outFile.is_open()) {
-        // Write player stats to the file
-        outFile << "HP: " << hp << "/" << hpmax << std::endl;
-        outFile << "Sanity: " << sanity << "/" << sanity_max << std::endl;
-        std::cout << "Player data saved to " << filename << std::endl;
-        outFile.close(); // Close the file
-    } else {
-        std::cerr << "Unable to open file: " << filename << std::endl;
-    }
-}
-
-
-void player::LoadFromFile(const std::string& filename) {
-    std::ifstream inFile(filename);                   // Open the file for reading
-    if (inFile.is_open()) {
-        std::string line;
-        while (std::getline(inFile, line)) {
-            std::istringstream iss(line);
-            std::string key;
-            if (iss >> key) {
-                if (key == "HP:") {
-                    iss >> hp;                        // set hp from file to current hp
-                } else if (key == "Sanity:") {
-                    iss >> sanity;                    // set sanity from file to current sanity
-                }
-            }
-        }
-        std::cout << "Player data loaded from " << filename << std::endl;
-        inFile.close(); // Close the file
-    } else {
-        std::cerr << "Unable to open file: " << filename << std::endl;
-    }
-}
