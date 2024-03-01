@@ -14,7 +14,7 @@ void Scene::printScene() {
   std::cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
   std::cout << '\n' << dialogue << '\n';
   std::cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
-  std::cout << '\n';\
+  std::cout << '\n';
   Game::printstats();
   /*for (int i = 0; i < sceneLength; i++) {
     std::cout << "-";
@@ -107,8 +107,13 @@ void Game::addCurrentEvent(std::string event) {
 
 void Game::askForChoice() {
   while (1) {
-    std::string choice;
-    std::cout << "Enter your choice: (q to quit game): ";
+    std::string x = "Enter Your Choice: (q to quit game): ";
+    for (int i = 0; i < x[i]; i++)
+    {
+      std::cout << x[i];
+      Sleep(15);
+    }
+    
     std::cin >> choice;
 
     if (choice == "q") {
