@@ -1,8 +1,11 @@
 #include "../Player/player.h"
+#include "../Sound/Playsound.h"
 #include <map>
 #include <vector>
 #include <string>
 #include <set>
+#include <fstream>      // for file streams
+#include <sstream>      // for string stream
 
 
 struct Option {
@@ -43,7 +46,7 @@ class Scene {
 };
 
 class Game {
-  static inline player Player;
+  static inline player PlayerP;
   static inline std::map<std::string, Scene*> scenes;
   static inline Scene* currentScene;
   static inline std::set<std::string> currentEvents;
@@ -59,8 +62,15 @@ class Game {
   static void addCurrentEvent(std::string event);
 
   public:
+    static void SaveFile(const std::string& filename);
+
+    static void LoadSave(const std::string& filename);
+
+    static void ResetSaveFile(const std::string& filename);
 
     static void printstats();
+
+    static void addPlayer(player p);
 
     static void addScene(std::string id, std::string dialogue, bool isEndScene=false);
 
@@ -71,7 +81,5 @@ class Game {
     static void printAllScenes();
 
     static void runGame(std::string startSceneId);
-
-    static void addPlayer(player p);
 };
 

@@ -1,6 +1,5 @@
 #include <iostream>
 #include "dialogueMaker.h"
-#include <Windows.h>
 
 Scene::Scene(std::string id, std::string dialogue, bool isEndScene) {
   this->id = id;
@@ -12,17 +11,10 @@ void Scene::printScene() {
   /*for (int i = 0; i < sceneLength; i++) {
     std::cout << "-";
   }*/
-  std::cout << "---------------------------------------------------------------------------------------------------------------------------";
-  //std::cout << '\n' << dialogue << '\n';
-  std::cout << '\n';
-  for (int i = 0; i < dialogue.size(); i++)
-  {
-    std::cout << dialogue[i];
-    Sleep(1);
-  }
-  std::cout << '\n';
-  std::cout << "---------------------------------------------------------------------------------------------------------------------------";
-  std::cout << '\n';
+  std::cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
+  std::cout << '\n' << dialogue << '\n';
+  std::cout << "---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------";
+  std::cout << '\n';\
   Game::printstats();
   /*for (int i = 0; i < sceneLength; i++) {
     std::cout << "-";
@@ -116,17 +108,12 @@ void Game::addCurrentEvent(std::string event) {
 void Game::askForChoice() {
   while (1) {
     std::string choice;
-    std::string x = "Enter Your Choice: (q to quit game): ";
-    for (int i = 0; i < x[i]; i++)
-    {
-      std::cout << x[i];
-      Sleep(15);
-    }
-//    std::cout << "\n\nEnter your choice: ";
+    std::cout << "Enter your choice: (q to quit game): ";
     std::cin >> choice;
 
     if (choice == "q") {
       std::cout << "Thanks for playing!\n";
+      Game::SaveFile("Save.txt");
       cleanUp();
       exit(0);
     }
@@ -141,7 +128,7 @@ void Game::askForChoice() {
 
     if (choiceInt > 0 && choiceInt <= Game::currentScene->getNumOptions()) {
       std::pair<std::string, std::string> nextScene = Game::currentScene->chooseOption(choiceInt);
-      Player.changestat(Game::currentScene->options[choiceInt-1].statchange);
+      PlayerP.changestat(Game::currentScene->options[choiceInt-1].statchange);
       std::string nextSceneId = nextScene.first;
       std::string event = nextScene.second;
       Game::setCurrentScene(nextSceneId);
@@ -163,7 +150,11 @@ void Game::cleanUp() {
 
 bool Game::gameEnded() {
   if (Game::currentScene->getIsEndScene()) {
+    PlayerP.hp = 0;
+    PlayerP.sanity = 0;
     Game::printCurrentScene();
+    Game::ResetSaveFile("save.txt");
+    
     cleanUp();
     return true;
   }
@@ -236,9 +227,65 @@ std::string Game::parseText(std::string text) {
 }
 
 void Game::addPlayer(player p){
-  Player = p;
+  PlayerP = p;
 }
 
 void Game::printstats(){
-  Player.printstats();
+  PlayerP.printstats();
 }
+
+void Game::LoadSave(const std::string& filename){
+  std::ifstream inFile(filename);                   // Open the file for reading
+  if (inFile.is_open()) {
+      std::string line;
+      std::string tempSceneid;
+      while (std::getline(inFile, line)) {
+          std::istringstream iss(line);
+          std::string key;
+          if (iss >> key) {
+              if (key == "HP:") {
+                  iss >> PlayerP.hp;                        // set hp from file to current hp
+               } else if (key == "Sanity:") {
+                  iss >> PlayerP.sanity;                    // set sanity from file to current sanity
+               } else if (key == "Scene:")
+                  iss >> tempSceneid;
+          }
+       }
+       Game::runGame(tempSceneid);
+      //  std::cout << "Player data loaded from " << filename << std::endl;
+      inFile.close(); // Close the file
+   } else {
+       std::cerr << "Unable to open file: " << filename << std::endl;
+  }
+}
+
+void Game::SaveFile(const std::string& filename) {
+  std::ofstream outFile(filename);                     // Open the file for writing
+  if (outFile.is_open()) {
+        // Write player stats to the file
+      outFile << "HP: " << PlayerP.hp << "/" << PlayerP.hpmax << std::endl;
+      outFile << "Sanity: " << PlayerP.sanity << "/" << PlayerP.sanity_max << std::endl;
+      outFile << "Scene: " << Game::currentScene->id << std::endl;
+      std::cout << "Player data saved to " << filename << std::endl;
+      outFile.close(); // Close the file
+    } else {
+      std::cerr << "Unable to open file: " << filename << std::endl;
+  }
+}
+
+void Game::ResetSaveFile(const std::string& filename){
+  std::ofstream outFile(filename);                     // Open the file for writing
+  if (outFile.is_open()) {
+        // Write player stats to the file
+      outFile << "HP: " << 100 << "/" << PlayerP.hpmax << std::endl;
+      outFile << "Sanity: " << 100 << "/" << PlayerP.sanity_max << std::endl;
+      outFile << "Scene: " << "begin" << std::endl;
+      //  std::cout << "Did Reset data to " << filename << std::endl;
+      outFile.close(); // Close the file
+    } else {
+      std::cerr << "Unable to open file: " << filename << std::endl;
+  }  
+}
+
+
+
